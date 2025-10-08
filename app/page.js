@@ -1,12 +1,23 @@
 "use client";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import {  useMotionValue, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+
+// ---------- MAIN PAGE ----------
 export default function HomePage() {
+  const topics = [
+    "Introduction to Matrices",
+    "Matrix Operations",
+    "Determinant & Inverse",
+    "Transpose & Symmetry",
+    "Rank & Linear Independence",
+    "Eigenvalues & Eigenvectors",
+    "Decompositions",
+    "Applications",
+  ];
+
   return (
     <main className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-gray-100 flex flex-col items-center text-center px-6 py-16">
-      
       {/* Hero Section */}
       <section className="max-w-4xl">
         <motion.h1
@@ -70,45 +81,9 @@ export default function HomePage() {
           transition={{ delay: 0.3, duration: 0.6 }}
           className="grid md:grid-cols-1 gap-8"
         >
-          
-          <div className="space-y-6">
-            <DocCard
-              title="1️⃣ Introduction to Matrices"
-              text="A matrix is a rectangular array of numbers arranged in rows and columns. It represents linear transformations and systems of equations."
-            />
-            <DocCard
-              title="2️⃣ Matrix Operations"
-              text="Addition, subtraction, and scalar multiplication are element-wise operations. Multiplication involves dot products of rows and columns."
-            />
-            <DocCard
-              title="3️⃣ Determinant & Inverse"
-              text="The determinant indicates if a matrix is invertible. The inverse exists only for square matrices with non-zero determinant."
-            />
-            <DocCard
-              title="4️⃣ Transpose & Symmetry"
-              text="The transpose of a matrix swaps rows and columns. Symmetric matrices are equal to their transpose."
-            />
-          </div>
-
-          {/* Column 2 */}
-          <div className="space-y-6">
-            <DocCard
-              title="5️⃣ Rank & Linear Independence"
-              text="The rank of a matrix indicates the number of linearly independent rows or columns — crucial for solving linear systems."
-            />
-            <DocCard
-              title="6️⃣ Eigenvalues & Eigenvectors"
-              text="Eigenvalues represent scaling factors; eigenvectors represent invariant directions under a linear transformation."
-            />
-            <DocCard
-              title="7️⃣ Decompositions"
-              text="LU, QR, and SVD decompositions are used to simplify solving systems, optimize computations, and analyze data."
-            />
-            <DocCard
-              title="8️⃣ Applications"
-              text="Matrices are used in graphics transformations, machine learning (PCA), networks, and solving real-world linear systems."
-            />
-          </div>
+          {topics.map((topic, index) => (
+            <DocCard key={index} title={`${index + 1}️⃣ ${topic}`} promptTopic={topic} />
+          ))}
         </motion.div>
       </section>
 
@@ -120,10 +95,35 @@ export default function HomePage() {
   );
 }
 
-function DocCard({ title, text }) {
+// ---------- DOCCARD COMPONENT ----------
+export function DocCard({ title, promptTopic }) {
   const ref = useRef(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+  const [isOpen, setIsOpen] = useState(false);
+  const [content, setContent] = useState("Loading...");
+
+  
+  useEffect(() => {
+    async function fetchGeminiData() {
+      try {
+        const res = await fetch("/api/gemini", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            prompt: `Explain ${promptTopic} in detail in simple, easy-to-understand text format only. No salutations.`,
+          }),
+        });
+        const data = await res.json();
+        setContent(data.text || "No data received.");
+      } catch (err) {
+        console.error(err);
+        setContent("Failed to load from Gemini.");
+      }
+    }
+
+    fetchGeminiData();
+  }, [promptTopic]);
 
   const handleMouseMove = (e) => {
     const rect = ref.current?.getBoundingClientRect();
@@ -136,11 +136,12 @@ function DocCard({ title, text }) {
     <motion.div
       ref={ref}
       onMouseMove={handleMouseMove}
+      onClick={() => setIsOpen(!isOpen)}
       whileHover={{ scale: 1.03 }}
       transition={{ type: "spring", stiffness: 200, damping: 15 }}
-      className="relative p-6 bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group"
+      className="relative p-6 bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer"
     >
-      
+      {/* Hover light effect */}
       <motion.div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
         style={{
@@ -148,15 +149,39 @@ function DocCard({ title, text }) {
         }}
       />
 
-      
       <div className="relative z-10">
-        <h3 className="text-xl font-semibold text-gray-800 mb-2 transition-colors duration-300 group-hover:text-blue-600-to-violet-200 ">
+        <h3 className="text-xl font-semibold text-gray-800 mb-2 transition-colors duration-300 group-hover:text-blue-600">
           {title}
         </h3>
-        <p className="text-gray-600 leading-relaxed ">{text}</p>
+
+        {/* Expand/Collapse with animation */}
+        <AnimatePresence initial={false}>
+          {!isOpen ? (
+            <motion.p
+              key="collapsed"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="text-gray-600 leading-relaxed line-clamp-1"
+            >
+              {content}
+            </motion.p>
+          ) : (
+            <motion.div
+              key="expanded"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="text-gray-600 leading-relaxed mt-2"
+            >
+              {content}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
-      {/* Subtle border glow */}
+      {/* Border glow */}
       <div className="absolute inset-0 border border-transparent rounded-2xl group-hover:border-blue-400/50 transition-all duration-300"></div>
     </motion.div>
   );
