@@ -1,13 +1,23 @@
-import { GoogleGenAI } from "@google/genai";
-const ai = new GoogleGenAI({});
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 export async function POST(req) {
-  const { prompt } = await req.json();
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: prompt,
-  });
-  return new Response(JSON.stringify({ text: response.text }), {
-    headers: { "Content-Type": "application/json" },
-  });
+  try {
+    const { prompt } = await req.json();
+
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash", 
+    });
+
+    const result = await model.generateContent(prompt);
+
+    return Response.json({
+      output: result.response.text(),
+    });
+
+  } catch (err) {
+    console.error("API ERROR →", err);
+    return Response.json({ error: err.message }, { status: 500 });
+  }
 }
