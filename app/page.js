@@ -3,6 +3,7 @@ import { motion, useMotionValue, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import Box from "./components/Box";
+import Popup from "reactjs-popup";
 
 export default function HomePage() {
   const topics = [
@@ -159,16 +160,16 @@ export default function HomePage() {
     ]
   }
 ]
-
+  
   return (
     <div>
       {topics.map(element => (
         <Box key={element.category} category={element.category}>
           {element.concepts.map(concept => (
             <div key={concept}>
-              <a href="">
+              <div >
                 {concept}
-              </a>
+              </div>
             </div>
           ))}
         </Box>

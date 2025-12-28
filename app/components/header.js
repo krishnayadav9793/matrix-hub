@@ -8,6 +8,7 @@ const navItems = [
   { name: "About", href: "/about" },
   { name: "AI Chatbot", href: "/AIchatbot" },
   { name: "Contact", href: "/contact" },
+  { name: "Calculator", href:"/calculator"}
 ];
 
 export default function Header() {
@@ -30,7 +31,7 @@ export default function Header() {
               {item.name}
             </Link>
 
-            {/* Animated underline */}
+            
             {hovered === item.name && (
               <motion.div
                 layoutId="underline"
