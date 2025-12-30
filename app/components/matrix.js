@@ -4,26 +4,18 @@ import React from 'react'
 function Matrix(props) {
   const row = props.row
   const col = props.col
-  let matrixArray = props.matrixArray
-  const setAllMatrix =props.setAllMatrix
-  const matrix = []
-  for (let i = 0; i < row; i++) {
-    matrix[i] = [];
-    for (let j = 0; j < col; j++) {
-      matrix[i][j] = 0;
-    }
-  }
+  // let matrixArray = props.matrixArray
+  const setAllMatrix =props.setResult
+  const matrix = props.result;
+  const setMat=props.setMat;
   const saveData = (r, c, data) => {
     const intdata = parseInt(data)
-    matrix[r][c] = intdata;
-    // console.log(matrix)
-  }
-  const storeData = ()=>{
-    // console.log("clicked")
+    matrix[r][c]=intdata
     
-    matrixArray.push(matrix)
-    setAllMatrix(matrixArray)
-    console.log(matrixArray)
+  }
+  const setMatrix = ()=>{
+    setAllMatrix(matrix)
+    // setMat();
   }
   return (
     <div id="matrix" className="grid gap-2  p-6 rounded-xl bg-gray-100/70 
@@ -39,12 +31,12 @@ function Matrix(props) {
               onChange={(e) => saveData(rowIndex, colIndex, e.target.value)}
             />
           ))}
+          
         </div>
+        
       ))}
-      <button className='bg-blue-600 rounded-b-md' onClick={storeData}>
-        Save
-      </button>
-
+      
+      <button type="button" onClick={setMatrix}> save</button>
     </div>
 
   )
