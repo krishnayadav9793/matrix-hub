@@ -82,11 +82,12 @@ export default function Box({ category, children }) {
                             inset: 0,
                             zIndex: 50,
                         }}
+                        className="justify-center items-center"
                     >
                         {(close) => (
                             <div className="p-3 rounded-xl bg-gray-100 
-                              border border-gray-300 shadow-lg 
-                              w-[350px] text-black flex flex-col relative">
+                              border border-gray-300 shadow-lg w-xl
+                            max-w-screen text-black flex flex-col  justify-center items-center ">
 
                                 <button
                                     className="absolute top-2 right-3 text-2xl text-gray-500 hover:text-black"

@@ -12,12 +12,10 @@ function page() {
       <div className='flex gap-5 w-full flex-wrap'>
         <Link href={"calculator/add"}> <button type="button">Add</button></Link>
         <Link href={"calculator/subtract"}> <button type='button'>Subtraction</button></Link>
-
-        
-        <button>Multiplication</button>
+        <Link href={"calculator/multiply"}> <button type='button'>Multiplication</button></Link>
         <button>Traverese</button>
         <button>Inverse</button>
-        <button>SDV</button>
+        <button>SVD</button>
         <button>Determinant</button>
         <button>Trace</button>
         <button>Rank</button>
