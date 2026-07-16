@@ -1,11 +1,8 @@
-import React from 'react'
+"use client";
 
-function page() {
-  return (
-    <div>
-      
-    </div>
-  )
+import React from "react";
+import MatrixCalculator from "../../components/MatrixCalculator";
+
+export default function Page() {
+  return <MatrixCalculator initialOp="transpose" />;
 }
-
-export default page
