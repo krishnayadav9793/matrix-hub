@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark scroll-smooth">
       <body
-        className={`${geistMono.variable} antialiased bg-[#020502] text-[#33ff33] min-h-screen flex flex-col font-mono`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#030712] text-slate-100 min-h-screen flex flex-col font-sans`}
       >
         <Header />
         <main className="flex-1 flex flex-col">

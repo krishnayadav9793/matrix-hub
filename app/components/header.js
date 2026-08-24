@@ -41,20 +41,22 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-md bg-black/85 border-b border-[#1b3a1b] shadow-[0_2px_15px_rgba(0,255,0,0.07)] select-none">
+    <header className="sticky top-0 z-50 backdrop-blur-md bg-[#030712]/75 border-b border-gray-800/60 shadow-[0_4px_20px_rgba(0,0,0,0.3)] select-none">
       <nav className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
         
         {/* Brand / Logo */}
         <Link 
           href="/" 
           onClick={playClick}
-          className="text-lg font-bold tracking-widest text-[#00ff41] drop-shadow-[0_0_8px_rgba(0,255,65,0.4)] hover:scale-102 transition-transform"
+          className="text-lg font-extrabold tracking-wider text-slate-100 hover:scale-102 transition-all flex items-center gap-1.5"
         >
-          ■ MATRIX HUB
+          <span className="w-2.5 h-2.5 rounded bg-emerald-500 shadow-[0_0_8px_#10b981] inline-block" />
+          <span>MATRIX</span>
+          <span className="text-emerald-400 font-light">HUB</span>
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-6 items-center">
+        <div className="hidden md:flex space-x-8 items-center">
           {navItems.map((item) => {
             const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
             return (
@@ -62,13 +64,13 @@ export default function Header() {
                 key={item.name}
                 onMouseEnter={() => setHovered(item.name)}
                 onMouseLeave={() => setHovered(null)}
-                className="relative py-1"
+                className="relative py-1.5"
               >
                 <Link
                   href={item.href}
                   onClick={playClick}
-                  className={`text-sm uppercase font-semibold font-mono tracking-wider transition-colors duration-200 ${
-                    isActive ? "text-[#00ff41] drop-shadow-[0_0_5px_rgba(0,255,65,0.4)]" : "text-[#22aa22] hover:text-[#00ff41]"
+                  className={`text-xs uppercase font-bold tracking-widest transition-colors duration-200 ${
+                    isActive ? "text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.3)]" : "text-slate-400 hover:text-slate-100"
                   }`}
                 >
                   {item.name}
@@ -78,7 +80,7 @@ export default function Header() {
                 {hovered === item.name && (
                   <motion.div
                     layoutId="header-underline"
-                    className="absolute left-0 right-0 h-[2px] bg-[#00ff41] shadow-[0_0_8px_#00ff41] bottom-0"
+                    className="absolute left-0 right-0 h-[2px] bg-emerald-400 shadow-[0_0_8px_#10b981] bottom-0"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -87,7 +89,7 @@ export default function Header() {
                 )}
 
                 {isActive && !hovered && (
-                  <div className="absolute left-0 right-0 h-[2px] bg-[#1b3a1b] bottom-0" />
+                  <div className="absolute left-0 right-0 h-[2px] bg-emerald-500/50 bottom-0" />
                 )}
               </div>
             );
@@ -100,12 +102,12 @@ export default function Header() {
             playClick();
             setMenuOpen(!menuOpen);
           }}
-          className="md:hidden flex flex-col justify-center items-center w-8 h-8 border border-[#1b3a1b] rounded bg-black/40 focus:outline-none hover:border-[#00ff41] transition-colors"
+          className="md:hidden flex flex-col justify-center items-center w-9 h-9 border border-gray-800 rounded-lg bg-gray-900/60 focus:outline-none hover:border-emerald-500/50 transition-colors"
         >
-          <div className="space-y-1">
-            <span className={`block w-4 h-[2px] bg-[#00ff41] transition-transform duration-200 ${menuOpen ? "rotate-45 translate-y-[6px]" : ""}`} />
-            <span className={`block w-4 h-[2px] bg-[#00ff41] transition-opacity duration-200 ${menuOpen ? "opacity-0" : ""}`} />
-            <span className={`block w-4 h-[2px] bg-[#00ff41] transition-transform duration-200 ${menuOpen ? "-rotate-45 -translate-y-[6px]" : ""}`} />
+          <div className="space-y-1.5">
+            <span className={`block w-5 h-[2px] bg-slate-200 transition-transform duration-200 ${menuOpen ? "rotate-45 translate-y-[7.5px]" : ""}`} />
+            <span className={`block w-5 h-[2px] bg-slate-200 transition-opacity duration-200 ${menuOpen ? "opacity-0" : ""}`} />
+            <span className={`block w-5 h-[2px] bg-slate-200 transition-transform duration-200 ${menuOpen ? "-rotate-45 -translate-y-[7.5px]" : ""}`} />
           </div>
         </button>
       </nav>
@@ -117,10 +119,10 @@ export default function Header() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="md:hidden bg-black/95 border-b border-[#1b3a1b]"
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+            className="md:hidden bg-[#030712]/95 border-b border-gray-800"
           >
-            <div className="flex flex-col px-6 py-4 space-y-4 font-mono text-sm">
+            <div className="flex flex-col px-6 py-4 space-y-4 text-xs font-bold tracking-widest">
               {navItems.map((item) => {
                 const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
                 return (
@@ -131,8 +133,8 @@ export default function Header() {
                       playClick();
                       setMenuOpen(false);
                     }}
-                    className={`block uppercase tracking-wider py-1.5 transition-colors ${
-                      isActive ? "text-[#00ff41] border-l-2 border-[#00ff41] pl-2" : "text-[#22aa22] hover:text-[#00ff41]"
+                    className={`block uppercase py-2 transition-colors ${
+                      isActive ? "text-emerald-400 border-l-2 border-emerald-400 pl-3" : "text-slate-400 hover:text-slate-100"
                     }`}
                   >
                     {item.name}

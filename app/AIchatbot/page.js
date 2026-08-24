@@ -70,45 +70,45 @@ export default function AIChatbot() {
   }, [messages, loading]);
 
   return (
-    <div className="relative min-h-[92vh] bg-[#020502] text-[#33ff33] font-mono p-4 flex flex-col items-center justify-center">
+    <div className="relative min-h-[92vh] bg-[#030712] text-slate-200 p-4 md:p-6 flex flex-col items-center justify-center overflow-hidden">
       
-      {/* Visual overlays */}
-      <div className="absolute inset-0 pointer-events-none z-10 bg-scanlines opacity-[0.06]" />
-      <div className="absolute inset-0 pointer-events-none z-10 bg-radial-reflection opacity-[0.05]" />
+      {/* Background blobs */}
+      <div className="absolute top-10 left-10 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative z-10 w-full max-w-3xl bg-[#050a05] border-2 border-[#1b3a1b] rounded-xl flex flex-col shadow-[0_0_35px_rgba(0,255,0,0.1)] h-[80vh] max-h-[700px] overflow-hidden">
+      <div className="relative z-10 w-full max-w-3xl bg-gray-900/35 border border-gray-800/80 rounded-2xl flex flex-col shadow-2xl h-[80vh] max-h-[700px] overflow-hidden backdrop-blur-md">
         
         {/* Terminal Titlebar */}
-        <div className="flex justify-between items-center text-[10px] text-[#1a551a] bg-black/60 border-b border-[#1b3a1b] px-4 py-2 font-bold uppercase tracking-widest select-none">
+        <div className="flex justify-between items-center text-[10px] text-slate-500 bg-gray-950/80 border-b border-gray-850 px-5 py-3 font-bold uppercase tracking-widest select-none font-sans">
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981] animate-pulse" />
             <span>Node: Oracle AI Session</span>
           </div>
-          <span>SIGNAL STRENGTH: 98%</span>
+          <span>SIGNAL: 100% ONLINE</span>
         </div>
 
         {/* Chat History Panel */}
-        <div className="flex-1 p-6 overflow-y-auto space-y-4 custom-scrollbar bg-black/40">
+        <div className="flex-1 p-6 overflow-y-auto space-y-5 custom-scrollbar bg-gray-950/10">
           <AnimatePresence initial={false}>
             {messages.map((msg) => (
               <motion.div
                 key={msg.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.25 }}
                 className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[80%] p-3.5 rounded-lg border text-xs leading-relaxed font-mono ${
+                  className={`max-w-[85%] p-4 rounded-2xl border text-xs leading-relaxed font-sans ${
                     msg.role === "user"
-                      ? "bg-[#0c220c] border-[#00ff41] text-[#00ff41] shadow-[0_0_10px_rgba(0,255,65,0.05)]"
-                      : "bg-[#040804] border-[#1b3a1b] text-[#22cc22]"
+                      ? "bg-emerald-950/20 border-emerald-500/30 text-emerald-350 shadow-sm"
+                      : "bg-gray-900/40 border-gray-800/80 text-slate-300"
                   }`}
                 >
-                  <div className="text-[8px] opacity-40 uppercase tracking-widest font-bold mb-1 select-none">
-                    {msg.role === "user" ? "[ Operator ]" : "[ Oracle ]"}
+                  <div className="text-[8px] opacity-40 uppercase tracking-widest font-bold mb-1.5 select-none font-mono">
+                    {msg.role === "user" ? "Operator" : "Oracle"}
                   </div>
-                  <div className="whitespace-pre-wrap break-words">
+                  <div className="whitespace-pre-wrap break-words leading-relaxed font-sans">
                     {msg.text}
                   </div>
                 </div>
@@ -123,11 +123,11 @@ export default function AIChatbot() {
               animate={{ opacity: 1 }}
               className="flex justify-start"
             >
-              <div className="bg-[#040804] border border-[#1b3a1b] text-[#22cc22]/60 max-w-[80%] p-3.5 rounded-lg text-xs leading-relaxed font-mono animate-pulse">
-                <div className="text-[8px] opacity-40 uppercase tracking-widest font-bold mb-1 select-none">
-                  [ Oracle ]
+              <div className="bg-gray-900/40 border border-gray-800/80 text-slate-400 max-w-[85%] p-4 rounded-2xl text-xs leading-relaxed font-sans animate-pulse">
+                <div className="text-[8px] opacity-40 uppercase tracking-widest font-bold mb-1.5 select-none font-mono">
+                  Oracle
                 </div>
-                <span>DECRYPTING COGNITIVE PAYLOAD...</span>
+                <span className="font-mono text-[10px] tracking-wide">DECRYPTING COGNITIVE PAYLOAD...</span>
               </div>
             </motion.div>
           )}
@@ -137,7 +137,7 @@ export default function AIChatbot() {
         {/* Chat Prompt input Form */}
         <form 
           onSubmit={getResponse}
-          className="border-t border-[#1b3a1b] bg-black/60 p-4 flex gap-3 select-none items-center"
+          className="border-t border-gray-850 bg-gray-950/60 p-4 flex gap-3 select-none items-center"
         >
           <input
             type="text"
@@ -148,16 +148,33 @@ export default function AIChatbot() {
             }}
             placeholder="Query the Oracle..."
             autoComplete="off"
-            className="flex-1 bg-black/90 border border-[#1b3a1b] text-[#00ff41] text-xs font-mono p-3 rounded focus:border-[#00ff41] focus:ring-1 focus:ring-[#00ff41] focus:outline-none shadow-[0_0_5px_rgba(0,100,0,0.1)] transition-all placeholder-[#1a551a]"
+            className="flex-1 bg-gray-900/60 border border-gray-800 text-slate-200 text-xs p-3 rounded-xl focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 focus:outline-none transition-all placeholder-slate-600 font-sans"
           />
           <button
             type="submit"
-            className="px-6 py-3 border border-[#00ff41] text-[#00ff41] bg-black hover:bg-[#0c220c] font-bold text-xs tracking-widest uppercase rounded shadow-[0_0_10px_rgba(0,255,65,0.1)] hover:shadow-[0_0_15px_rgba(0,255,65,0.3)] active:scale-95 transition-all cursor-pointer"
+            className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-bold text-xs tracking-widest uppercase rounded-xl shadow-[0_4px_12px_rgba(16,185,129,0.15)] hover:shadow-[0_4px_20px_rgba(16,185,129,0.35)] transition-all cursor-pointer"
           >
             Submit
           </button>
         </form>
       </div>
+
+      <style jsx global>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+          height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #1f2937;
+          border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #10b981;
+        }
+      `}</style>
     </div>
   );
 }
